@@ -248,57 +248,34 @@ function atualizarCiclo(){
 
 function resetTimer(){
 
-
-
     clearInterval(timer);
-
-
 
     timer=null;
 
-
     running=false;
-
-
 
     study=true;
 
-
-
     currentCycle=0;
-
-
 
     time=getStudySeconds();
 
-
-
     updateDisplay();
 
-
-
     atualizarCiclo();
-
-
 
     document.getElementById("status")
     .innerHTML =
     "Preparado para estudar";
 
-
-
 }
 
 function toggleFocusMode(){
 
-
     document
     .querySelector(".container")
     .classList.toggle("focus-mode");
-
-
 }
-
 
 // ================================
 // videos youtube
@@ -332,23 +309,17 @@ const videosLofi = [
 
 function carregarVideos(){
 
-
     let area =
     document.getElementById("videos");
 
-
     if(!area) return;
-
-
 
     videosLofi.forEach(video=>{
 
 
         area.innerHTML += `
 
-
         <div class="video-card">
-
 
         <iframe
 
@@ -360,15 +331,11 @@ function carregarVideos(){
 
         </iframe>
 
-
         </div>
-
 
         `;
 
-
     });
-
 
 }
 
@@ -398,70 +365,39 @@ teclado:
 
 function playSound(nome){
 
-
-
     if(ambienteAudio){
 
-
         ambienteAudio.pause();
-
-
     }
-
-
 
     ambienteAudio =
     new Audio(sons[nome]);
 
-
-
     ambienteAudio.loop=true;
-
-
 
     ambienteAudio.volume =
     document.getElementById("volume").value;
 
-
-
     ambienteAudio.play();
-
-
-
 }
 
 function stopSound(){
 
-
-
     if(ambienteAudio){
-
 
         ambienteAudio.pause();
 
-
         ambienteAudio.currentTime=0;
-
-
     }
-
-
 }
 
 function changeVolume(){
 
-
-
     if(ambienteAudio){
-
 
         ambienteAudio.volume =
         document.getElementById("volume").value;
-
-
     }
-
-
 }
 
 // ================================
@@ -470,64 +406,37 @@ function changeVolume(){
 
 function tocarAlarme(){
 
-
     const audio =
     new AudioContext();
-
-
 
     const oscilador =
     audio.createOscillator();
 
-
-
     const volume =
     audio.createGain();
 
-
-
     oscilador.frequency.value=520;
-
 
     volume.gain.value=0.05;
 
-
-
     oscilador.connect(volume);
-
 
     volume.connect(audio.destination);
 
-
-
     oscilador.start();
 
-
-
     setTimeout(()=>{
-
-
         oscilador.stop();
-
-
     },600);
-
-
 }
 
 function atualizarCicloInicial(){
 
-
     let total =
     document.getElementById("cycles").value;
 
-
-
     document.getElementById("cycle").innerHTML =
-
     "Ciclo 0/" + total;
-
-
 }
 
 atualizarCicloInicial();
