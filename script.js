@@ -1,14 +1,8 @@
 let timer = null;
-
 let time = 0;
-
 let running = false;
-
 let study = true;
-
 let currentCycle = 0;
-
-
 
 function getStudySeconds(){
 
@@ -18,8 +12,6 @@ function getStudySeconds(){
 
 }
 
-
-
 function getBreakSeconds(){
 
     return Number(
@@ -27,9 +19,6 @@ function getBreakSeconds(){
     ) * 60;
 
 }
-
-
-
 
 function updateDisplay(){
 
@@ -50,10 +39,6 @@ function updateDisplay(){
 
 
 }
-
-
-
-
 
 function startTimer(){
 
@@ -112,9 +97,6 @@ function startTimer(){
 
 }
 
-
-
-
 function pauseTimer(){
 
 
@@ -147,9 +129,6 @@ function pauseTimer(){
 
 
 }
-
-
-
 
 function changeMode(){
 
@@ -245,10 +224,6 @@ function changeMode(){
 
 }
 
-
-
-
-
 function atualizarCiclo(){
 
 
@@ -270,10 +245,6 @@ function atualizarCiclo(){
 
 
 }
-
-
-
-
 
 function resetTimer(){
 
@@ -318,10 +289,6 @@ function resetTimer(){
 
 }
 
-
-
-
-
 function toggleFocusMode(){
 
 
@@ -362,9 +329,6 @@ const videosLofi = [
 
 
 ];
-
-
-
 
 function carregarVideos(){
 
@@ -408,47 +372,29 @@ function carregarVideos(){
 
 }
 
-
-
 carregarVideos();
-
-
-
-
 
 // ================================
 // SONS AMBIENTES
 // ================================
 
-
-
 let ambienteAudio = null;
 
-
-
 const sons = {
-
 
 chuva:
 "audio/chuva.mp3",
 
-
 biblioteca:
 "audio/biblioteca.mp3",
-
 
 cafe:
 "audio/cafe.mp3",
 
-
 teclado:
 "audio/teclado.mp3"
 
-
 };
-
-
-
 
 function playSound(nome){
 
@@ -484,10 +430,6 @@ function playSound(nome){
 
 }
 
-
-
-
-
 function stopSound(){
 
 
@@ -506,10 +448,6 @@ function stopSound(){
 
 }
 
-
-
-
-
 function changeVolume(){
 
 
@@ -526,15 +464,9 @@ function changeVolume(){
 
 }
 
-
-
-
-
 // ================================
 // ALARME SUAVE
 // ================================
-
-
 
 function tocarAlarme(){
 
