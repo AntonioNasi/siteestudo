@@ -1,92 +1,149 @@
-let timer;
+let timer = null;
 
-let time;
+let time = 0;
 
-let running=false;
+let running = false;
 
-let study=true;
+let study = true;
 
-let currentCycle=0;
+let currentCycle = 0;
+
+
+
+function getStudySeconds(){
+
+    return Number(
+        document.getElementById("studyTime").value
+    ) * 60;
+
+}
+
+
+
+function getBreakSeconds(){
+
+    return Number(
+        document.getElementById("breakTime").value
+    ) * 60;
+
+}
+
+
+
+
+function updateDisplay(){
+
+
+    let minutes = Math.floor(time / 60);
+
+    let seconds = time % 60;
+
+
+    document.getElementById("minutes").innerHTML =
+    minutes;
+
+
+    document.getElementById("seconds").innerHTML =
+    seconds
+    .toString()
+    .padStart(2,"0");
+
+
+}
+
+
 
 
 
 function startTimer(){
 
-    let materia =
-document.getElementById("subject").value;
+
+    if(time <= 0){
+
+        time = study 
+        ? getStudySeconds()
+        : getBreakSeconds();
+
+    }
 
 
-if(materia){
 
-document.getElementById("status").innerHTML =
-"Estudando: " + materia;
+    if(running){
+
+        return;
+
+    }
+
+
+
+    running = true;
+
+
+
+    document
+    .querySelector(".container")
+    .classList.add("focus-mode");
+
+
+
+    timer = setInterval(()=>{
+
+
+        time--;
+
+
+        updateDisplay();
+
+
+
+        if(time <= 0){
+
+
+            changeMode();
+
+
+        }
+
+
+
+    },1000);
+
+
 
 }
 
 
-if(running) return;
 
 
-let studyMinutes =
-document.getElementById("studyTime").value;
-
-
-let breakMinutes =
-document.getElementById("breakTime").value;
+function pauseTimer(){
 
 
 
-if(time===undefined){
-
-time = study 
-? studyMinutes*60 
-: breakMinutes*60;
-
-}
+    if(running){
 
 
-running=true;
-
-document
-.querySelector(".container")
-.classList.add("focus-mode");
+        clearInterval(timer);
 
 
-timer=setInterval(updateTimer,1000);
-
-
-}
+        running = false;
 
 
 
-function updateTimer(){
+        document.querySelector(
+        "#status"
+        ).innerHTML =
+        "Pausado";
 
 
-let minutes=Math.floor(time/60);
-
-let seconds=time%60;
+        return;
 
 
-
-document.getElementById("minutes").innerHTML=
-minutes;
-
-
-document.getElementById("seconds").innerHTML=
-seconds.toString().padStart(2,'0');
+    }
 
 
 
-if(time<=0){
+    startTimer();
 
-changeMode();
-
-}else{
-
-
-time--;
-
-}
 
 
 }
@@ -97,113 +154,188 @@ time--;
 function changeMode(){
 
 
-clearInterval(timer);
-
-running=false;
-
-tocarAlarme();
+    clearInterval(timer);
 
 
-
-if(study){
-
-
-currentCycle++;
-
-document.getElementById("cycle").innerHTML =
-"Ciclo " + currentCycle + "/" +
-document.getElementById("cycles").value;
-
-
-let total =
-document.getElementById("cycles").value;
+    running=false;
 
 
 
-if(currentCycle>=total){
+    tocarAlarme();
 
-document.getElementById("status").innerHTML=
-"Estudo concluído!";
 
-return;
+
+    if(study){
+
+
+
+        currentCycle++;
+
+
+
+        atualizarCiclo();
+
+
+
+        let totalCycles =
+        Number(
+        document.getElementById("cycles").value
+        );
+
+
+
+        if(currentCycle >= totalCycles){
+
+
+
+            document.getElementById("status")
+            .innerHTML =
+            "Estudo concluído!";
+
+
+
+            time=0;
+
+
+            updateDisplay();
+
+
+            return;
+
+        }
+
+
+
+        study=false;
+
+
+
+        time=getBreakSeconds();
+
+
+
+        document.getElementById("status")
+        .innerHTML =
+        "Intervalo";
+
+
+
+    }else{
+
+
+        study=true;
+
+
+
+        time=getStudySeconds();
+
+
+
+        document.getElementById("status")
+        .innerHTML =
+        "Hora de estudar";
+
+
+    }
+
+
+
+    startTimer();
+
 
 }
 
 
 
-study=false;
 
 
-document.getElementById("status").innerHTML=
-"Intervalo";
+function atualizarCiclo(){
 
 
-
-time =
-document.getElementById("breakTime").value*60;
+    let total =
+    document.getElementById("cycles").value;
 
 
 
-}else{
+    document.getElementById("cycle")
+    .innerHTML =
 
-
-study=true;
-
-
-document.getElementById("status").innerHTML=
-"Hora de estudar";
-
-
-time =
-document.getElementById("studyTime").value*60;
+    "Ciclo "
+    +
+    currentCycle
+    +
+    "/"
+    +
+    total;
 
 
 }
 
 
-
-startTimer();
-
-
-}
-
-
-
-function pauseTimer(){
-
-
-clearInterval(timer);
-
-running=false;
-
-
-}
 
 
 
 function resetTimer(){
 
 
-clearInterval(timer);
 
-
-running=false;
-
-study=true;
-
-currentCycle=0;
-
-
-time =
-document.getElementById("studyTime").value*60;
+    clearInterval(timer);
 
 
 
-document.getElementById("status").innerHTML=
-"Preparado para estudar";
+    timer=null;
+
+
+    running=false;
+
+
+
+    study=true;
+
+
+
+    currentCycle=0;
+
+
+
+    time=getStudySeconds();
+
+
+
+    updateDisplay();
+
+
+
+    atualizarCiclo();
+
+
+
+    document.getElementById("status")
+    .innerHTML =
+    "Preparado para estudar";
+
 
 
 }
+
+
+
+
+
+function toggleFocusMode(){
+
+
+    document
+    .querySelector(".container")
+    .classList.toggle("focus-mode");
+
+
+}
+
+
+// ================================
+// videos youtube
+// ================================
 
 const videosLofi = [
 
@@ -232,39 +364,46 @@ const videosLofi = [
 ];
 
 
+
+
 function carregarVideos(){
 
 
-let area =
-document.getElementById("videos");
+    let area =
+    document.getElementById("videos");
+
+
+    if(!area) return;
 
 
 
-videosLofi.forEach(video=>{
+    videosLofi.forEach(video=>{
 
 
-area.innerHTML += `
+        area.innerHTML += `
 
 
-<div class="video-card">
+        <div class="video-card">
 
 
-<iframe
+        <iframe
 
-src="https://www.youtube.com/embed/${video}"
+        src="https://www.youtube.com/embed/${video}"
 
-allow="autoplay">
+        allow="autoplay"
 
-</iframe>
+        allowfullscreen>
 
-
-</div>
-
-
-`;
+        </iframe>
 
 
-});
+        </div>
+
+
+        `;
+
+
+    });
 
 
 }
@@ -273,64 +412,190 @@ allow="autoplay">
 
 carregarVideos();
 
+
+
+
+
+// ================================
+// SONS AMBIENTES
+// ================================
+
+
+
+let ambienteAudio = null;
+
+
+
+const sons = {
+
+
+chuva:
+"audio/chuva.mp3",
+
+
+biblioteca:
+"audio/biblioteca.mp3",
+
+
+cafe:
+"audio/cafe.mp3",
+
+
+teclado:
+"audio/teclado.mp3"
+
+
+};
+
+
+
+
+function playSound(nome){
+
+
+
+    if(ambienteAudio){
+
+
+        ambienteAudio.pause();
+
+
+    }
+
+
+
+    ambienteAudio =
+    new Audio(sons[nome]);
+
+
+
+    ambienteAudio.loop=true;
+
+
+
+    ambienteAudio.volume =
+    document.getElementById("volume").value;
+
+
+
+    ambienteAudio.play();
+
+
+
+}
+
+
+
+
+
+function stopSound(){
+
+
+
+    if(ambienteAudio){
+
+
+        ambienteAudio.pause();
+
+
+        ambienteAudio.currentTime=0;
+
+
+    }
+
+
+}
+
+
+
+
+
+function changeVolume(){
+
+
+
+    if(ambienteAudio){
+
+
+        ambienteAudio.volume =
+        document.getElementById("volume").value;
+
+
+    }
+
+
+}
+
+
+
+
+
+// ================================
+// ALARME SUAVE
+// ================================
+
+
+
 function tocarAlarme(){
 
 
-const audio =
-new AudioContext();
+    const audio =
+    new AudioContext();
 
 
 
-const oscilador =
-audio.createOscillator();
+    const oscilador =
+    audio.createOscillator();
 
 
 
-const volume =
-audio.createGain();
+    const volume =
+    audio.createGain();
 
 
 
-oscilador.frequency.value = 520;
+    oscilador.frequency.value=520;
 
 
-volume.gain.value = 0.05;
-
-
-
-oscilador.connect(volume);
-
-
-volume.connect(audio.destination);
+    volume.gain.value=0.05;
 
 
 
-oscilador.start();
+    oscilador.connect(volume);
+
+
+    volume.connect(audio.destination);
 
 
 
-setTimeout(()=>{
+    oscilador.start();
 
 
-oscilador.stop();
+
+    setTimeout(()=>{
 
 
-},600);
+        oscilador.stop();
 
+
+    },600);
+
+
+}
+
+function atualizarCicloInicial(){
+
+
+    let total =
+    document.getElementById("cycles").value;
+
+
+
+    document.getElementById("cycle").innerHTML =
+
+    "Ciclo 0/" + total;
 
 
 }
 
-function toggleFocusMode(){
-
-
-const tela =
-document.querySelector(".container");
-
-
-
-tela.classList.toggle("focus-mode");
-
-
-
-}
+atualizarCicloInicial();
